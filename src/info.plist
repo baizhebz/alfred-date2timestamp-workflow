@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string></string>
+	<key>category</key>
+	<string>Tools</string>
+	<key>connections</key>
+	<dict>
+		<key>3008A6C9-BBF3-47DA-8204-52B6F876875D</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>52B121B3-843E-427D-99D8-25AF3B8E00CB</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>zHHHe</string>
+	<key>description</key>
+	<string>parse date into a unix timestamp or reverse</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Date2Timestamp</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>52B121B3-843E-427D-99D8-25AF3B8E00CB</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>126</integer>
+				<key>keyword</key>
+				<string>dt</string>
+				<key>queuedelaycustom</key>
+				<integer>1</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<false/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>script</key>
+				<string>require 'workflows.php';
+
+if ( ! ini_get('date.timezone'))
+{
+	date_default_timezone_set('Asia/Chongqing');
+}
+
+$wf = new workflows();
+
+$query = '{query}';
+
+if ($query == '')
+{
+	$now = time();
+	$wf-&gt;result(uniqid(), $now, '现在的unix时间戳是: '.$now , 'current unix timestamp: '.$now, 'icon.png');
+}
+else if (is_numeric($query) &amp;&amp; strlen($query) === 10)
+{
+	$date = date('Y-m-d H:i:s', $query);
+	$wf-&gt;result(uniqid(), $date, '对应的日期-时间是: '.$date , 'current datetime: '.$date, 'icon.png');
+}
+else
+{
+	$datetime_ts = strtotime($query);
+	if ($datetime_ts === FALSE)
+	{
+		$wf-&gt;result(uniqid(), '', 'Oops,输入有误啊', '无法转换成日期或时间戳', 'icon.png');	
+	}
+	else
+	{
+		$wf-&gt;result(uniqid(), $datetime_ts, '该日期对应的时间戳是: '.$datetime_ts , 'the unix timestamp: '.$datetime_ts, 'icon.png');
+	}
+}
+
+echo $wf-&gt;toxml();</string>
+				<key>subtext</key>
+				<string>什么都不输就是当前时间戳，输入的话则进行双向转换</string>
+				<key>title</key>
+				<string>转换日期和时间戳</string>
+				<key>type</key>
+				<integer>1</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>3008A6C9-BBF3-47DA-8204-52B6F876875D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>3008A6C9-BBF3-47DA-8204-52B6F876875D</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+		<key>52B121B3-843E-427D-99D8-25AF3B8E00CB</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>
